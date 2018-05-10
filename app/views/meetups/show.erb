@@ -1,0 +1,56 @@
+<h2><%= @meetup.title %> </h2>
+<% if @message %>
+  <h4><%= @message %></h4>
+<% end %>
+
+<dl>
+  <dt>Hosted by:</dt>
+  <dd><%= @creator.username %></dd>
+  <dt>Category:</dt>
+  <dd><%= @meetup.category %></dd>
+  <dt>Description:</dt>
+  <dd><%= @meetup.description %></dd>
+  <dt>Location:</dt>
+  <dd><%= @meetup.location %></dd>
+  <dt>Address:</dt>
+  <dd><%= @meetup.address %>, <%= @meetup.city %>, <%= @meetup.state %>, <%= @meetup.zip %></dd>
+</dl>
+<% if @members %>
+
+  <h4>List of members</h4>
+  <ul>
+    <% participant_id = 0 %>
+    <% @members.each do |member| %>
+      <% if member.id == session[:user_id] %>
+        <% participant_id = member.id %>
+      <% end %>
+      <% %>
+      <li><%= member.username %><img src="#{members.avatar_url}"></li>
+    <% end %>
+  </ul>
+<% end %>
+<% if @join_button %>
+  <form action="/meetups/<%= @meetup.id%>/meetup_participants" method="post">
+    <input type="submit" name="submit" value="Join Meetup">
+  </form>
+<% end %>
+
+<% if @edit_button %>
+  <form action="/meetups/<%= @meetup.id%>/edit" method="get">
+    <input type="submit" name="submit" value="Update this Meetup">
+  </form>
+<% end %>
+
+<% if @delete_button %>
+  <form action="/meetups/<%= @meetup.id%>" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" name="submit" value="Delete this Meetup">
+  </form>
+<% end %>
+
+<% if @leave_button %>
+  <form action="/meetups/<%= @meetup.id %>/meetup_participants/<%= participant_id %>" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" name="submit" value="Leave Meetup">
+  </form>
+<% end %>
